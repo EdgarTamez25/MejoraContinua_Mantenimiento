@@ -15,6 +15,8 @@ Route::get('tipos.mantenimientos' ,'mantenimientoController@Tipos')  				-> name
 Route::post('mantenimientos' 			,'mantenimientoController@Mantenimientos') -> name('Mantenimientos');
 Route::put('mantenimiento/{id}'   ,'mantenimientoController@putMantenimiento')  	  -> name('putMantenimiento');
 
+ Route::post('obtener.mantenimientos.calendario' ,'mantenimientoController@obtener_mantenimientos_calendario') -> name('obtener_mantenimientos_calendario');
+
 
 
 

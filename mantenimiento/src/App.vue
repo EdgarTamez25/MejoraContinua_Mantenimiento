@@ -6,11 +6,11 @@
       </template>
     </v-snackbar>
 <!-- v-if="getLogeado"  -->
-    <v-navigation-drawer left app v-model="drawer" v-ripple  width="auto" v-if="getLogeado">
+    <v-navigation-drawer  app temporary v-model="drawer" v-ripple  width="300px" v-if="getLogeado">
       <v-list dense nav class="py-0 white--text" >
         <v-list-item two-line>
           <v-list-item-avatar >
-            <img src="http://producciongama.com:8080/CRM-GAMA-MOVIL/img/person.png" >
+            <img src="http://producciongama.com/CRM-GAMA-MOVIL/img/person.png" >
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -45,8 +45,8 @@
       <router-view/>
     </v-main>
 
-    <v-app-bar app color="celeste" dark height="70px">
-      <img src="http://producciongama.com:8080/IMAGENES/logotipo.png" width="50px" @click.stop="drawer = !drawer" >
+    <v-app-bar app color="celeste" dark>
+      <img src="http://producciongama.com/IMAGENES/logotipo.png" width="50px" @click.stop="drawer = !drawer" >
       <v-spacer></v-spacer>
       <!-- <v-toolbar-items text-right>
          <v-btn text small > 
@@ -63,7 +63,7 @@
     <v-dialog v-model="auth" persistent width="400px">
       <v-card class="pa-1">
         <v-card-text class="mt-2 text-center" >
-          <img :src="`http://producciongama.com:8080/IMAGENES/logotipo.png`"
+          <img :src="`http://producciongama.com/IMAGENES/logotipo.png`"
                 aspect-ratio="1.5" class=" pa-2 mb-5" width="50%" transparent
           />
            
@@ -125,7 +125,7 @@
 
     },
     data: () => ({
-      apk_movil:'http://producciongama.com:8080/MANTENIMIENTO/mantenimiento.apk',
+      apk_movil:'http://producciongama.com/MANTENIMIENTO/mantenimiento.apk',
       iniciar: false,
       cerrar_sesion:false,
       valid:true,
@@ -147,8 +147,9 @@
             text: 'Administración',
             model: true,
             children: [
-              { text: 'Inicio'                  ,path: '/', icon:'home'},
-              { text: 'Reporte Mantenimiento'   ,path: '/mantenimiento', icon:'mdi-file-document-edit'},
+              { text: 'Inicio'                  ,path: '/'              , icon:'home'},
+              { text: 'Reporte Mantenimiento'   ,path: '/mantenimiento' , icon:'mdi-file-document-edit'},
+              { text: 'Calendario'              ,path:'calendario.mantenimiento' , icon:'mdi-calendar-account'}
             ],
           },
         ],

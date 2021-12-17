@@ -3,67 +3,74 @@
   	<v-row justify="center">
       
 
-  		<v-col cols="12" > 
-				<v-card-actions class="font-weight-black headline"> {{ titulo }} </v-card-actions>
+  		<v-col cols="12" md="6" class="py-0" > 
+				<v-card-actions class="font-weight-black text-xs-h6 text-sm-h5 py-0 "> {{ titulo }} </v-card-actions>
+			</v-col>
 
-				<v-row >
-					<v-col cols="6" sm="4" md="3" xl="2" align="center">
-						<v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
-							      transition="scale-transition" offset-y min-width="290px" color="celeste">
-							<template v-slot:activator="{ on, attrs }">
-								<v-text-field
-									v-model="date" label="Fecha desde" prepend-icon="event" readonly v-bind="attrs"
-									v-on="on" outlined dense hide-details
-								></v-text-field>
-							</template>
-							<v-date-picker v-model="date" no-title scrollable color="celeste">
-								<v-spacer></v-spacer>
-								<v-btn text color="gris" @click="menu = false">Cancel</v-btn>
-								<v-btn dark color="rosa" @click="$refs.menu.save(date)">OK</v-btn>
-							</v-date-picker>
-						</v-menu>
-					</v-col>
-				
-					<v-col cols="6" sm="4" md="3" xl="2" >
-						<v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" :return-value.sync="date2"
-							      transition="scale-transition" offset-y min-width="290px" color="celeste">
-							<template v-slot:activator="{ on, attrs }">
-								<v-text-field
-									v-model="date2" label="Fecha hasta" prepend-icon="event" readonly v-bind="attrs"
-									v-on="on" outlined dense hide-details
-								></v-text-field>
-							</template>
-							<v-date-picker v-model="date2" no-title scrollable color="celeste">
-								<v-spacer></v-spacer>
-								<v-btn text color="gris" @click="menu2 = false">Cancel</v-btn>
-								<v-btn dark color="rosa" @click="$refs.menu2.save(date2)">OK</v-btn>
-							</v-date-picker>
-						</v-menu>
-					</v-col>
-				</v-row>
+			<v-col cols="6" md="3" class="py-0"   >
+				<v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
+								transition="scale-transition" offset-y min-width="290px" color="celeste">
+					<template v-slot:activator="{ on, attrs }">
+						<v-text-field
+							v-model="date" label="Fecha desde" append-icon="event" readonly v-bind="attrs"
+							v-on="on" outlined dense hide-details
+						></v-text-field>
+					</template>
+					<v-date-picker v-model="date" no-title scrollable color="celeste">
+						<v-spacer></v-spacer>
+						<v-btn text color="gris" @click="menu = false">Cancel</v-btn>
+						<v-btn dark color="rosa" @click="$refs.menu.save(date)">OK</v-btn>
+					</v-date-picker>
+				</v-menu>
+			</v-col>
+		
+			<v-col cols="6" md="3" class="py-0"   >
+				<v-menu ref="menu2" v-model="menu2" :close-on-content-click="false" :return-value.sync="date2"
+								transition="scale-transition" offset-y min-width="290px" color="celeste">
+					<template v-slot:activator="{ on, attrs }">
+						<v-text-field
+							v-model="date2" label="Fecha hasta" append-icon="event" readonly v-bind="attrs"
+							v-on="on" outlined dense hide-details
+						></v-text-field>
+					</template>
+					<v-date-picker v-model="date2" no-title scrollable color="celeste">
+						<v-spacer></v-spacer>
+						<v-btn text color="gris" @click="menu2 = false">Cancel</v-btn>
+						<v-btn dark color="rosa" @click="$refs.menu2.save(date2)">OK</v-btn>
+					</v-date-picker>
+				</v-menu>
+			</v-col>
 
-				<v-card class=" mt-3" outlined >
+			<v-col cols="12">
+				<v-card class="" outlined >
 					<v-card-actions>
 			      <v-text-field
-			        v-model="search"
-			        append-icon="search"
-			        label="Buscar reporte de mantenimiento"
-			        single-line
-			        hide-details
-			      ></v-text-field>
+								v-model="search"
+								append-icon="search"
+								label="Buscar reporte "
+								single-line
+								hide-details
+								filled dense
+							></v-text-field>
 			      <v-spacer></v-spacer>
-						<v-btn dark color="green" @click="ImprimirExcel()">
+						<v-btn 
+							fab small  
+							color="green" 
+							class="white--text"
+							:disabled="getMantenimiento.length? false: true "
+							@click="ImprimirExcel()"
+						>
 							<v-icon>mdi-microsoft-excel </v-icon>
 						</v-btn>
-			      <v-btn  class="gris" icon dark @click="init()" ><v-icon>refresh</v-icon> </v-btn>
-
+			      <v-btn small class="gris" fab dark @click="init()" ><v-icon>refresh</v-icon> </v-btn>
 			    </v-card-actions>
+
 			    <v-data-table
 			      :headers="headers"
 			      :items="getMantenimiento"
 			      :search="search"
 			      fixed-header
-						:height="tamanioPantalla"
+						:height="$vuetify.breakpoint.name === 'xs'?'550px': tamanioPantalla"
 						hide-default-footer
 						:loading ="Loading"
 						loading-text="Cargando... Por favor espere."
@@ -72,27 +79,32 @@
 						@page-count="pageCount = $event"
 						dense
 			    >
-						<template v-slot:item.fecha="{item}">
-							<span> {{  moment(item.fecha).format('LL') }} </span>
+						<template v-slot:item.fecha_actual="{item}">
+							<span> {{  moment(item.fecha_actual).format('LL') }} </span>
 						</template>
 						<template v-slot:item.action="{ item }" v-if="getdatosUsuario.id === 2"> 
 			    		<v-btn  class="celeste" icon dark @click="abrirModal(2, item)"><v-icon> create </v-icon></v-btn> 
 				    </template>
 			    </v-data-table>
 			  </v-card>
+			
 				<!-- PAGINACION -->
 				<div class="text-center pt-2">
 					<v-pagination v-model="page" :length="pageCount"></v-pagination>
 				</div>
+			</v-col>
 
-				<v-dialog persistent v-model="dialog" width=600 >	
-		    	<v-card class="pa-3">
-		    		<controlMantenimiento :modoVista="modoVista" :parametros="parametros" @modal="dialog = $event" />
-		    	</v-card>
-		    </v-dialog>
-       
+
+			<v-dialog persistent v-model="dialog" width=600 >	
+				<v-card class="pa-3">
+					<controlMantenimiento 
+						:modoVista="modoVista" 
+						:parametros="parametros" 
+						@modal="dialog = $event"
+						/>
+				</v-card>
+			</v-dialog>
 				 
-  		</v-col>
   	</v-row>
   </v-main>
 </template>
@@ -150,19 +162,19 @@
         tamanioPantalla () {
 				switch (this.$vuetify.breakpoint.name) {
 					case 'xs':
-						return this.$vuetify.breakpoint.height -400
+						return 'auto';
 					break;
 					case 'sm': 
-						return this.$vuetify.breakpoint.height -400
+						return this.$vuetify.breakpoint.height -300
 					break;
 					case 'md':
-						return this.$vuetify.breakpoint.height -400
+						return this.$vuetify.breakpoint.height -300
 					break;
 					case 'lg':
-						return this.$vuetify.breakpoint.height -400
+						return this.$vuetify.breakpoint.height -300
 					break;
 					case 'xl':
-						return this.$vuetify.breakpoint.height -400
+						return this.$vuetify.breakpoint.height -300
 					break;
 				}
 			},
@@ -189,7 +201,7 @@
 						tValores.push(this.headers[j].value);
 					}
 					let tInformacion = this.getMantenimiento
-
+					
 					this.manejarDescarga(this.titulo,tHeaders,tValores,tInformacion)
 				},
 

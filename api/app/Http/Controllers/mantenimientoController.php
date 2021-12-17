@@ -65,4 +65,14 @@ class mantenimientoController extends Controller
 			return response("No se detecto ningun cambios.",400);
 		endif;
 	}
+
+	public function obtener_mantenimientos_calendario(Request $req){
+		return $mantenimientos = DB::select('SELECT m.id, m.fecha_actual, m.tipo, t.nombre as nomtipo, m.hora1, m.hora2, 
+																								m.id_depto, d.nombre as nomdepto, m.id_maquina, ma.nombre as nommaquina,
+																								m.causas, m.contramedidas 
+																					FROM mantenimientos m LEFT JOIN tipos t ON m.tipo = t.id
+																																LEFT JOIN departamentos d ON m.id_depto = d.id
+																																LEFT JOIN maquinas ma ON m.id_maquina = ma.id
+																					WHERE m.fecha_actual BETWEEN ? AND ?',[$req -> fecha1,$req -> fecha2 ]);
+	}
 }
